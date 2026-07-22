@@ -374,7 +374,11 @@ begin
     if CurUninstallStep = usUninstall then
     begin
         InitializeGlobals;
-        InstallPowerShellProfiles(PWSH_SCOPE_NONE);
+        try
+            InstallPowerShellProfiles(PWSH_SCOPE_NONE);
+        except
+            MsgBox('An error occurred: ' + GetExceptionMessage, mbError, MB_OK);
+        end;
         ModifyPath(False);
         DelTree(g_AppDirPath, True, True, True);
     end;
