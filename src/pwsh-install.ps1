@@ -86,6 +86,11 @@ function Update-PowerShellProfile([string]$Path, [bool] $Install, [bool] $UseBom
         return
     }
 
+    $profile = Get-Item -LiteralPath $Path -Force -ErrorAction Ignore
+    if ($profile) {
+        $Path = $profile.ResolvedTarget
+    }
+
     # Get-Content uses .NET's StreamReader, so it auto-detects UTF-8/UTF-16 with BOM.
     $text = Get-Content -LiteralPath $Path -Raw -ErrorAction Ignore
     if (!$text) {
